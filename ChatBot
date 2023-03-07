@@ -1,0 +1,43 @@
+const fetch = require('node-fetch');
+
+// Create an array of usernames to log
+const usersToLog = ['Player1', 'Player2', 'Player3'];
+
+// Define the Discord webhook URL
+const webhookUrl = 'REPLACE THIS WITH YOUR WEBHOOK!!';
+
+// Listen for incoming chat messages
+const chatListener = (event) => {
+  // Get the chat message
+  const message = JSON.parse(event.data).message;
+
+  // Check if the message is a chat message
+  if (message && message.text && message.translate === 'chat.type.text') {
+    // Get the username from the message
+    const username = message.with[0].text;
+
+    // Check if the username is in the list of usernames to log
+    if (usersToLog.includes(username)) {
+      // Get the message text
+      const messageText = message.with[1].text;
+
+      // Create the webhook payload
+      const payload = {
+        username: username,
+        content: messageText
+      };
+
+      // Send the payload to the webhook URL
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+    }
+  }
+};
+
+// Add the chat listener to the game chat
+minecraftChat.addEventListener('message', chatListener);
