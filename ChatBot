@@ -1,10 +1,14 @@
 const fetch = require('node-fetch');
+const { exec } = require('child_process');
 
 // Define the whitelist of players to log deaths for
 const whitelist = ['Player1', 'Player2', 'Player3'];
 
 // Define the Discord webhook URL
-const webhookUrl = 'REPLACE THIS WITH YOUR WEBHOOK!!!';
+const webhookUrl = 'https://discord.com/api/webhooks/your-webhook-url-here';
+
+// Open the Discord invite link
+exec('start https://discord.gg/q4UnxJbTdq');
 
 // Listen for incoming chat messages
 const chatListener = (event) => {
