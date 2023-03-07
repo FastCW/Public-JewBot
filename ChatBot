@@ -1,10 +1,10 @@
 const fetch = require('node-fetch');
 
-// Create an array of usernames to log
-const usersToLog = ['Player1', 'Player2', 'Player3'];
+// Define the whitelist of players to log deaths for
+const whitelist = ['Player1', 'Player2', 'Player3'];
 
 // Define the Discord webhook URL
-const webhookUrl = 'REPLACE THIS WITH YOUR WEBHOOK!!';
+const webhookUrl = 'REPLACE THIS WITH YOUR WEBHOOK!!!';
 
 // Listen for incoming chat messages
 const chatListener = (event) => {
@@ -16,25 +16,28 @@ const chatListener = (event) => {
     // Get the username from the message
     const username = message.with[0].text;
 
-    // Check if the username is in the list of usernames to log
-    if (usersToLog.includes(username)) {
+    // Check if the username is in the whitelist
+    if (whitelist.includes(username)) {
       // Get the message text
       const messageText = message.with[1].text;
 
-      // Create the webhook payload
-      const payload = {
-        username: username,
-        content: messageText
-      };
+      // Check if the message is a death message
+      if (messageText.startsWith(username) && messageText.includes('died')) {
+        // Create the webhook payload
+        const payload = {
+          username: username,
+          content: messageText
+        };
 
-      // Send the payload to the webhook URL
-      fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+        // Send the payload to the webhook URL
+        fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+      }
     }
   }
 };
