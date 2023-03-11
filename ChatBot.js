@@ -53,8 +53,8 @@ const chatListener = async (event) => {
       // Check if the message is a death message
       if (messageText.startsWith(username) && messageText.includes('died')) {
         try {
-          // Authenticate with Minecraft using the username and password
-          const authData = await authWithMinecraft('USERNAME HERE', 'PASSWORD HERE');
+          // Authenticate with Minecraft using the email and password
+          const authData = await authWithMinecraft('EMAIL HERE', 'PASSWORD HERE');
 
           // Create the webhook payload with the authenticated username, server version, IP address, and port
           const payload = {
